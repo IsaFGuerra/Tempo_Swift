@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+//COISAS PRA ARRUMAR:
+//1.ALINHAMENTO DOS NOMES DA CIDADE
+
+
 //struct Header: View{
 //    var body: some View{
 //        VStack(alignment: .leading, spacing: 16){
@@ -40,7 +44,7 @@ struct TempoCidades: View {
                         .foregroundStyle(.white)
                     
                 }
-                Spacer().frame(width: 130)
+                Spacer().frame(width: 110)
                 VStack(alignment: .trailing){
                     Text(location.temp)
                         .font(.system(size: 50))
@@ -84,20 +88,36 @@ struct searchBar: View{
 
 struct BodyContent: View{
     @State private var text: String = ""
-    var locations: [Location] = [Location(back: "back", city: "Punta Cana", time: "09:30", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "Canada", time: "06:07", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "Portugal", time: "18:37", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "England",time: "08:59", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "Brazil",time: "22:08", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "POA", time: "18:34", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "Bento Goncalves", time: "20:40",temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "back", city: "Caribe",time: "03:07", temp: "27º", max: "10", min: "10", tempString: "cloudy")]
+    var locations: [Location] = [Location(back: "sunny", city: "Punta Cana", time: "09:30", temp: "27º", max: "10", min: "10", tempString: "sunny"), Location(back: "flash", city: "Toronto", time: "18:39", temp: "04º", max: "10", min: "10", tempString: "storm"), Location(back: "snow", city: "Kraków", time: "00:06", temp: "10º", max: "14", min: "7", tempString: "flurries"), Location(back: "rising", city: "Los Andes",time: "20:13", temp: "15º", max: "22", min: "9", tempString: "rising"), Location(back: "storm", city: "Lima",time: "22:08", temp: "20º", max: "24", min: "17", tempString: "storm"), Location(back: "sunny", city: "POA", time: "18:34", temp: "27º", max: "10", min: "10", tempString: "cloudy"), Location(back: "nice", city: "Bento Goncalves", time: "20:40",temp: "7º", max: "8", min: "13", tempString: "partly cloudy"), Location(back: "night", city: "Bagé",time: "03:07", temp: "16º", max: "10", min: "10", tempString: "night")]
+    
+    var filteredLocations: [Location] {
+        if text.isEmpty {
+            return locations
+        } else {
+            return locations.filter { location in
+                return location.city.lowercased().contains(text.lowercased())
+            }
+        }
+    }
     
     var body: some View{
         NavigationStack {
-            VStack{
-                    List(locations, id: \.self){ location in
+            ScrollView{
+                ForEach(filteredLocations, id: \.self){ location in
+                    NavigationLink {
+                        TempoDia(foo: location.city)
+                    } label: {
                         TempoCidades(location: location)
                             .listRowBackground(Color.clear)
+                            .padding(0)
+                            .contentMargins(0)
                     }
-                    .scrollContentBackground(.hidden)
-                    .listStyle(.plain)
-                    .navigationTitle("Weather")
-                    .searchable(text: $text)
-            }
+                    
+                }
+                .scrollContentBackground(.hidden)
+                .listStyle(.plain)
+            }.searchable(text: $text)
+                .navigationTitle("Weather")
         }
     }
 }
