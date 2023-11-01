@@ -10,13 +10,10 @@ import SwiftUI
 struct TempoDia: View {
     var foo: String = ""
     var body: some View {
-        Text(foo)
+        WeatherMain()
     }
 }
 
 #Preview {
     TempoDia(foo: "preview")
 }
-
-
-//testeeeeeeee

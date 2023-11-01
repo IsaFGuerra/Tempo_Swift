@@ -11,7 +11,7 @@ import SwiftUI
 struct tempoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TempoCidades(location: Location(back: "sunny", city: "Punta Cana", time: "09:30", temp: "27º", max: "10", min: "10", tempString: "sunny"))
         }
     }
 }
